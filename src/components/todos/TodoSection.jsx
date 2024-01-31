@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import SingleTodo from './SingleTodo';
 
 const initTodos = [
   { id: 1, text: 'Complete task 1', completed: false },
@@ -16,6 +17,11 @@ console.log('todosList ===', todosList);
   return (
     <div>
       <h2>Todos</h2>
+      <h3>Total done Todos: {todosList.filter((tObj) => tObj.completed).length} </h3>
+      <ul>
+        {todosList.map((tObj) => <li key={tObj.id}><SingleTodo todoTitle={tObj.text} todoComplete={tObj.completed} /></li>)}
+      </ul>
+      
       <ul>
         {todosList.map((tObj) => <li key={tObj.id} >{tObj.text} - {tObj.completed === true ? 'done' : 'not done'} </li>)}
       </ul>
