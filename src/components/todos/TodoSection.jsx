@@ -12,25 +12,67 @@ const initTodos = [
 export default function TodoSection() {
 
 const [todosList, setTodosList] = useState(initTodos)
+const [inputValue, setInputValue] = useState('')
 
-function deleteNb4(itemId) {
+function hendleDelete(itemId) {
   // grazinti versija masivo kuriame nera id 4
   const delete4 = todosList.filter((tItem) => tItem.id !== itemId)
   setTodosList(delete4)
 }
-console.log('todosList ===', todosList);
+
+function handleDoneUndone(idToChange) {
+console.log('idToChange ===', idToChange);
+// const todosListCopy = [...todosList]
+// const elToChange = todosListCopy.find((tObj) => tObj.id === idToChange)
+// console.log('elToChange ===', elToChange);
+// elToChange.completed = !elToChange.completed
+// setTodosList(todosListCopy)
+
+const modifiedArrCopyWithChange = todosList.map((tObj) => {
+  if (tObj.id === idToChange) {
+// noriu grazinti kopija
+return {...tObj, completed: !tObj.completed}
+  }
+  return tObj
+})
+setTodosList(modifiedArrCopyWithChange)
+}
+
+function handleNewTodo() {
+console.log('addingtodo');
+// { id: 50, text: 'Complete task 1', completed: false },
+// iskonsolinti new todoValue
+// iskonsolinti obj
+}
+
+function newValue(e) {
+const newValue = e.target.value
+setInputValue(newValue)
+
+}
+
   return (
     <div>
       <h2>Todos</h2>
       <h3>Total done Todos: {todosList.filter((tObj) => tObj.completed).length} </h3>
-      <button onClick={() => deleteNb4(4)}>Delete with id 4</button>
+      {/* <form> */}
+<fieldset>
+  <legend>Add todo</legend>
+  <input value={inputValue} onChange={newValue} type="text" placeholder='add new todo' />
+  <button onClick={handleNewTodo}>Add</button>
+</fieldset>
+
+      {/* </form> */}
+
+      <button onClick={() => hendleDelete(4)}>Delete with id 4</button>
       <ul>
-        {todosList.map((tObj) => <li key={tObj.id}><SingleTodo todoTitle={tObj.text} todoComplete={tObj.completed} /></li>)}
+        {todosList.map((tObj) => <li key={tObj.id}><SingleTodo onDelete={() => hendleDelete(tObj.id)} onDoneUndone={() =>handleDoneUndone(tObj.id)} todoTitle={tObj.text} todoComplete={tObj.completed} /></li>)}
       </ul>
       
       <ul>
-        {todosList.map((tObj) => <li key={tObj.id} > 
+        {initTodos.map((tObj) => <li key={tObj.id} > 
         id: {tObj.id} {tObj.text} - {tObj.completed === true ? 'done' : 'not done'} 
+        <button>Delete</button>
         </li>)}
       </ul>
     </div>
