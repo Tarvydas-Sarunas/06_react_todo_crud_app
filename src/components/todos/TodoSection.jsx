@@ -13,17 +13,25 @@ export default function TodoSection() {
 
 const [todosList, setTodosList] = useState(initTodos)
 
+function deleteNb4(itemId) {
+  // grazinti versija masivo kuriame nera id 4
+  const delete4 = todosList.filter((tItem) => tItem.id !== itemId)
+  setTodosList(delete4)
+}
 console.log('todosList ===', todosList);
   return (
     <div>
       <h2>Todos</h2>
       <h3>Total done Todos: {todosList.filter((tObj) => tObj.completed).length} </h3>
+      <button onClick={() => deleteNb4(4)}>Delete with id 4</button>
       <ul>
         {todosList.map((tObj) => <li key={tObj.id}><SingleTodo todoTitle={tObj.text} todoComplete={tObj.completed} /></li>)}
       </ul>
       
       <ul>
-        {todosList.map((tObj) => <li key={tObj.id} >{tObj.text} - {tObj.completed === true ? 'done' : 'not done'} </li>)}
+        {todosList.map((tObj) => <li key={tObj.id} > 
+        id: {tObj.id} {tObj.text} - {tObj.completed === true ? 'done' : 'not done'} 
+        </li>)}
       </ul>
     </div>
   )
