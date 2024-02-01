@@ -1,5 +1,8 @@
 import {useState} from 'react';
 import SingleTodo from './SingleTodo';
+import { v4 as makeId } from 'uuid';
+import AddTodo from './AddTodo';
+import TodoList from './TodoList';
 
 const initTodos = [
   { id: 1, text: 'Complete task 1', completed: false },
@@ -12,7 +15,7 @@ const initTodos = [
 export default function TodoSection() {
 
 const [todosList, setTodosList] = useState(initTodos)
-const [inputValue, setInputValue] = useState('')
+
 
 function hendleDelete(itemId) {
   // grazinti versija masivo kuriame nera id 4
@@ -38,36 +41,39 @@ return {...tObj, completed: !tObj.completed}
 setTodosList(modifiedArrCopyWithChange)
 }
 
-function handleNewTodo() {
+function handleNewTodo(inputValue) {
 console.log('addingtodo');
-// { id: 50, text: 'Complete task 1', completed: false },
+const newTodoObj = {
+  id: makeId(),
+  text: inputValue,
+  completed: false
+}
 // iskonsolinti new todoValue
+console.log('inputValue ===', inputValue);
 // iskonsolinti obj
+console.log('newTodo ===', newTodoObj);
+
+setTodosList([newTodoObj, ...todosList])
+
 }
 
-function newValue(e) {
-const newValue = e.target.value
-setInputValue(newValue)
-
+function handleTodoEditTitle(idToUpdate, updatedText) {
+console.log('handleTodoEditTitle', idToUpdate, updatedText);
 }
 
   return (
     <div>
       <h2>Todos</h2>
       <h3>Total done Todos: {todosList.filter((tObj) => tObj.completed).length} </h3>
-      {/* <form> */}
-<fieldset>
-  <legend>Add todo</legend>
-  <input value={inputValue} onChange={newValue} type="text" placeholder='add new todo' />
-  <button onClick={handleNewTodo}>Add</button>
-</fieldset>
-
-      {/* </form> */}
+      <AddTodo onNewTodo={handleNewTodo}/>
 
       <button onClick={() => hendleDelete(4)}>Delete with id 4</button>
-      <ul>
-        {todosList.map((tObj) => <li key={tObj.id}><SingleTodo onDelete={() => hendleDelete(tObj.id)} onDoneUndone={() =>handleDoneUndone(tObj.id)} todoTitle={tObj.text} todoComplete={tObj.completed} /></li>)}
-      </ul>
+      <TodoList
+        list={todosList}
+        onTodoEditTitle={handleTodoEditTitle}
+        onDelete={hendleDelete}
+        onDoneUndone={handleDoneUndone}
+      />
       
       <ul>
         {initTodos.map((tObj) => <li key={tObj.id} > 
