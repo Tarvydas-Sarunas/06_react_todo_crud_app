@@ -16,6 +16,7 @@ export default function TodoSection() {
 
 const [todosList, setTodosList] = useState(initTodos)
 
+console.log('todosList ===', todosList);
 
 function hendleDelete(itemId) {
   // grazinti versija masivo kuriame nera id 4
@@ -59,6 +60,15 @@ setTodosList([newTodoObj, ...todosList])
 
 function handleTodoEditTitle(idToUpdate, updatedText) {
 console.log('handleTodoEditTitle', idToUpdate, updatedText);
+
+setTodosList(todosList.map((tObj) => {
+  if (tObj.id === idToUpdate) {
+// noriu grazinti kopija
+return {...tObj, text: updatedText}
+  }
+  return tObj
+})
+)
 }
 
   return (
